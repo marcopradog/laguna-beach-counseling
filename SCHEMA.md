@@ -1,126 +1,76 @@
-# Schema (Structured Data)
+# SCHEMA.md
 
-**Project:** Laguna Beach Counseling
-**Last updated:** 2026-07-13
-**Phase:** Phase 6 - Technical SEO and Structured Data
+The strategy handoff for structured data: which JSON-LD type each page template gets, and the entity data that feeds it. Dev implements from this and validates every block at validator.schema.org. Treat schema as business-critical: it is how the practice gets surfaced in AI answers and maps, so it must not regress.
 
-## Purpose
+Canonical entity values live in CLIENT_FACTS.md. This file says which type goes where; CLIENT_FACTS.md says what the values are. Do not duplicate values here; reference them.
 
-This document specifies which structured data (JSON-LD schema) each page template receives. This is critical for AI answer engines and search visibility.
+---
 
-## Schema Validation
+## Site-wide
 
-All schema blocks must be validated at https://validator.schema.org/ before deployment.
+- `Organization` (or the more specific `MedicalBusiness`, see below) declared once, referenced by `@id` across pages so every page points at the same entity rather than redefining it.
+- `BreadcrumbList` on every page below the top level (the `/therapy/*`, `/specialties/*`, and `/about/*` children especially).
+- `WebSite` with the canonical URL.
 
-## Schema by Page Template
+Do NOT emit `aggregateRating` until real review totals are pulled from GBP and Yelp (both currently TBD in CLIENT_FACTS.md). Fabricated or placeholder ratings are a violation and a trust risk. Add it only once the numbers are real, and set a monthly refresh cadence.
 
-[To be completed during Phase 6 after strategy handoff]
+---
 
-### Home Page
+## The business entity
 
-**Schema type:** LocalBusiness (or appropriate subtype)
+Primary `@type`: `MedicalBusiness`, dual-typed with `ProfessionalService`.
+`medicalSpecialty`: "Psychiatric" and "Family" (closest schema.org values for a psychotherapy practice).
 
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Laguna Beach Counseling",
-  "description": "[Brief description]",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "[Address]",
-    "addressLocality": "Laguna Beach",
-    "addressRegion": "CA",
-    "postalCode": "[ZIP]",
-    "addressCountry": "US"
-  },
-  "telephone": "[Phone]",
-  "url": "[Website URL]",
-  "sameAs": [
-    "[Google Business Profile URL]",
-    "[Other verified profiles]"
-  ]
-}
-```
+Core properties (values from CLIENT_FACTS.md): `name`, `address` (PostalAddress), `telephone`, `email`, `url`, `priceRange` ($$$), `currenciesAccepted` (USD), `paymentAccepted`, `areaServed`, `hasMap`, `geo`, and `openingHoursSpecification`.
 
-[Refine with actual data during implementation]
+`sameAs` array (the entity signals, use the canonical URLs in CLIENT_FACTS.md): Google Business Profile, Yelp, Facebook, Instagram, Kay's LinkedIn, Psychology Today (Kay), and the NRMFT profile.
 
-### About Page
+Two cautions:
+- `openingHoursSpecification` must use the RESOLVED authoritative hours, not the current site-vs-Yelp discrepancy. Hold schema hours until CLIENT_FACTS.md hours are confirmed.
+- The "Be Seen Within 24 Hours" access promise is marketing copy, not a schema hours value. Keep it in page copy, out of `openingHoursSpecification`.
 
-**Schema type:** AboutPage (consider adding Person schema for practitioners)
+`LocalBusiness` schema is anchored on `/contact` (the page carrying the map and NAP) and referenced on the homepage. Do not redefine the business on every page; reference the `@id`.
 
-[Define during Phase 6]
+---
 
-### Services Pages
+## Per-template schema
 
-**Schema type:** Service
+| Page / template | Schema type | Notes |
+|---|---|---|
+| `/` homepage | `MedicalBusiness` (reference `@id`) + `WebSite` | Anchor entity reference, not a redefinition |
+| `/contact` | `MedicalBusiness` full record + `PostalAddress` + `geo` + `hasMap` | The canonical NAP page |
+| `/about` | `AboutPage` | Links to Person entities |
+| `/about/kay-wenger` | `Person` | Kay's entity: name, jobTitle, credentials, `worksFor` the business, `sameAs` (her LinkedIn, Psychology Today, NRMFT). The strongest entity page on the site |
+| `/about/our-team` | `Person` (one per associate) | Each associate: name, credential, `worksFor`, `supervisor` = Kay where accurate. Only publish confirmed credentials (see CLIENT_FACTS.md) |
+| `/about/our-approach` | `AboutPage` | No special type needed beyond breadcrumb |
+| `/therapy/*` (individuals, couples, families, teens, children, seniors) | `Service` | `serviceType`, `provider` = the business `@id`, `areaServed`. One Service per page |
+| `/specialties/*` (anxiety, depression, grief, life-transitions, infidelity, conflict-resolution, neurodiversity, faith-based, addiction-recovery) | `Service` | Same pattern. `serviceType` = the specialty |
+| `/beach-therapy` | `Service` | The category-of-one offering. Consider adding descriptive properties; do not invent a nonstandard type |
+| `/couples-intensive` | `Service` | Include price range once published |
+| `/discernment-counseling` | `Service` | |
+| `/telehealth` | `Service` | `availableChannel` / online delivery; `areaServed` = California (state licensing limits it to CA residents) |
+| `/fees` | `Service` with `offers` / `PriceSpecification` | Reflect the out-of-network posture accurately; do not imply insurance is billed directly |
+| `/faq` | `FAQPage` | The `Question`/`Answer` pairs MUST match the visible on-page FAQ exactly. Mismatched FAQ schema is a known penalty risk |
+| `/blog` index | `Blog` | |
+| blog post template | `Article` (or `BlogPosting`) | `author` = the relevant Person, `publisher` = the business |
+| `/testimonials` | HOLD | No `Review` schema until the HIPAA-compliant authorization workflow is approved. Do not build with identifying client content |
+| `/get-started` | `Service` or `ContactPoint` | The booking page; no PHI in schema |
+| `/privacy-policy`, `/thank-you` | none needed | Utility pages |
 
-[Define individual service schemas during Phase 6]
+---
 
-### Contact Page
+## FAQ and answer-engine notes
 
-**Schema type:** ContactPage
+- Any FAQ content that appears on a service page (not just `/faq`) can carry `FAQPage` schema, but the schema must mirror the visible text word for word.
+- This build takes the Answer Engine module: ship a single curated `llms.txt` at the root (see the roadmap). It is agent infrastructure, not an SEO lever. Do not generate per-page `.md` mirror files.
+- No `agents.md` and no UCP/ACP manifests here: the site does not transact (no payments, no PHI, booking is an external Calendly embed). Agent commerce manifests apply only where an agent can actually complete a transaction on the site, which is not the case.
 
-[Define during Phase 6]
+---
 
-### Blog Posts (if blog module enabled)
+## Validation gate
 
-**Schema type:** Article or BlogPosting
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "[Post title]",
-  "author": {
-    "@type": "Person",
-    "name": "[Author name]"
-  },
-  "datePublished": "[ISO date]",
-  "dateModified": "[ISO date]",
-  "description": "[Meta description]"
-}
-```
-
-### FAQ Page (if applicable)
-
-**Schema type:** FAQPage
-
-**CRITICAL:** FAQPage schema must match the visible FAQ on the page exactly. This is business-critical for AI answer visibility.
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "[Question text exactly as shown on page]",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "[Answer text exactly as shown on page]"
-      }
-    }
-  ]
-}
-```
-
-## Answer Engine Module (if applicable)
-
-If the site has booking, ordering, or transactional capabilities for agent actions:
-
-- [ ] Create `agents.md` in `.well-known/` directory
-- [ ] Define what the business offers
-- [ ] List key pages for agents
-- [ ] Set rules for agent behavior (confirm with human before transacting, use live pricing, etc.)
-
-## UCP Manifest (if agent commerce applies)
-
-If applicable for agent discovery:
-
-- [ ] Create `/.well-known/ucp/manifest.json` (UCP spec version 2026-01)
-- [ ] Ensure manifest points to real working endpoint (signpost to nothing gets business dropped from agent results)
-
-## Notes
-
-Schema is how clients get found in AI answers. It must not regress. Every schema block must be validated and tested before deployment.
+- Validate every JSON-LD block at validator.schema.org before launch.
+- Confirm the `FAQPage` blocks match visible content exactly.
+- Confirm `sameAs` URLs all resolve.
+- Confirm no `aggregateRating` or `Review` ships with placeholder or fabricated values.
+- Re-validate after any content edit that touches a page carrying schema (a Chad audit job).

@@ -6,11 +6,27 @@
 
 ## Purpose
 
-This playbook guides Chad's quarterly automated audit of the site. It catches technical drift, performance regression, accessibility issues, and ensures ongoing compliance with project standards.
+This playbook guides Chad's quarterly automated audit of the site. It catches technical drift, performance regression, accessibility issues, and ensures ongoing compliance with project standards. Chad reads this when it reviews the site, makes edits on a branch following the repo's rules, and opens a pull request. It never merges its own work.
+
+The build's job is to make the site optimizable overnight. This file is the checklist for keeping it healthy after launch.
 
 ## Audit Frequency
 
 Run quarterly (every 3 months) or on-demand when triggered.
+
+## The Hard Guardrails (never automatic, ever)
+
+These require a human and are never changed by the audit agent on its own:
+
+- **Legal, pricing, and any clinical or outcome claim.** Never auto-edited.
+- **HIPAA-sensitive content.** Never publish anything that could identify a client. No testimonials without written authorization.
+- **Modality claims.** Never add Gottman Method, EFT, EMDR, IFS, or Imago as a practice or practitioner claim (see CLIENT_FACTS.md).
+- **Statistics.** Never publish an unverified figure or anything on the "Do not publish" list in CONTENT_EVIDENCE.md.
+- **Copy rewrites** only if the client opted into AI-assisted content (LBC has), but the guardrails above still bind.
+
+### The approve-card flow
+
+The pull request plus the Cloudflare preview is the approval card. Connor approves SEO edits (title, meta, schema, alt text). Steve approves anything heavier. Legal, pricing, and claims are never automatic.
 
 ## Audit Checklist
 
@@ -50,16 +66,17 @@ npm outdated
 Use Cloudflare Speed Observatory and/or Lighthouse:
 
 - [ ] LCP < 2.5s (75th percentile)
-- [ ] INP < 200ms (75th percentile)
+- [ ] INP < 200ms (75th percentile), watch this one specifically; it is the most-failed vital and pure JS architecture
 - [ ] CLS < 0.1 (75th percentile)
+- [ ] Lighthouse scores against the budget in DEPLOYMENT.md (Perf 90+, A11y 95+, Best Practices 95+, SEO 100)
 - [ ] Total page weight trend (flag if increasing significantly)
 - [ ] Image optimization check (any images > 300KB?)
 
 ### 4. Accessibility Audit
 
-**Goal:** Maintain WCAG 2.1 AA compliance
+**Goal:** Maintain WCAG 2.2 AA compliance
 
-Automated checks:
+Automated checks (axe, Lighthouse, or Pa11y):
 
 ```bash
 # Run automated accessibility testing
@@ -73,10 +90,11 @@ Automated checks:
 - [ ] Focus states visible on interactive elements
 - [ ] Keyboard navigation works
 - [ ] `prefers-reduced-motion` respected
+- [ ] No accessibility-overlay widget has crept back in
 
 ### 5. SEO and Structured Data Check
 
-**Goal:** Prevent schema regression and maintain SEO health
+**Goal:** Prevent schema regression and maintain SEO and answer-engine health
 
 ```bash
 # Validate all schema blocks
@@ -85,12 +103,16 @@ Automated checks:
 
 - [ ] All pages have unique title tags and meta descriptions
 - [ ] All pages have canonical tags
-- [ ] sitemap.xml is current and accessible
+- [ ] sitemap.xml is current and accessible, matching the live page set
 - [ ] robots.txt is correct
+- [ ] llms.txt is still current with the live page set (see AEO.md)
 - [ ] All JSON-LD schema blocks validate at validator.schema.org
 - [ ] FAQPage schema matches visible content exactly
+- [ ] `aggregateRating` never ships with placeholder or fabricated values
 - [ ] Open Graph tags present and correct
 - [ ] hreflang tags correct (if bilingual)
+- [ ] Search Console review: pages with impressions but few clicks want a better title or meta; pages catching questions want FAQ schema; page-two pages want a content pass. Beach Therapy and the anxiety panic/phobia cluster are the standing high-opportunity targets (see the SEO baseline in SITE_ARCHITECTURE.md)
+- [ ] Citation share: track AI-referred traffic and citations over time, not just rankings (a reporting concern, noted for awareness)
 
 ### 6. Broken Links and Assets
 
@@ -105,6 +127,7 @@ Automated checks:
 - [ ] No broken external links
 - [ ] All images load correctly
 - [ ] All scripts and stylesheets load
+- [ ] High-value URLs still resolve (beach-therapy, couples, senior, discernment, the children blog post); fix any missed redirect
 
 ### 7. Security Headers Check
 
@@ -118,9 +141,9 @@ Check `src/_headers`:
 - [ ] Permissions-Policy configured
 - [ ] CSP if applicable
 
-### 8. Brand Constraint Compliance
+### 8. Brand and Content Integrity
 
-**Goal:** Prevent drift to generic defaults
+**Goal:** Prevent drift to generic defaults and keep the brand voice intact
 
 Grep checks against Forbidden Patterns from DESIGN_SYSTEM.md:
 
@@ -128,23 +151,29 @@ Grep checks against Forbidden Patterns from DESIGN_SYSTEM.md:
 # Check for banned fonts
 grep -r "font-family.*Inter" src/
 
-# Check for em dashes
-grep -r "—" src/
+# Check for em dashes (U+2014); pattern uses the escape so this file stays em-dash-free
+grep -rP "\x{2014}" src/
 
 # Check for banned filler phrases
-grep -r "Unlock your potential\|Leverage our expertise\|Game-changing" src/
+grep -r "transform\|unlock\|breakthrough\|leverage\|simply" src/
 ```
 
-- [ ] No banned fonts (Inter, etc.)
-- [ ] No em dashes in content or code
-- [ ] No banned filler phrases
-- [ ] Colors match DESIGN_SYSTEM.md tokens
+- [ ] No banned fonts (Inter, Noto Serif, Manjari)
+- [ ] No em dashes anywhere (site, content, code comments)
+- [ ] No banned filler phrases (see voice-tone.md)
+- [ ] Colors match DESIGN_SYSTEM.md tokens; one gold CTA per viewport, gold under its 2 percent budget; inline SVG icons only
 - [ ] No unauthorized design changes
+- [ ] Voice mechanics on any new copy (see voice-tone.md): a question present, abstract paragraphs carry a question or metaphor, lightness, banned-word scan (especially "simply")
+- [ ] The "therapy factory" test: does any surface read as high-volume or impersonal? Flag if so
 
-### 9. Content Freshness (if applicable)
+### 9. Facts and Freshness
 
 **Goal:** Keep content current and accurate
 
+- [ ] CLIENT_FACTS.md CONFIRM items: have any been resolved and need publishing (hours, entity structure, Irene's status, per-associate modalities)?
+- [ ] Roster: are departing associates (Christy, Austin) still shown when they should not be? Are replacements live?
+- [ ] Statistics: re-verify any published figure against its primary source and refresh to the current year (see CONTENT_EVIDENCE.md). Prevalence, utilization, and cost numbers age fastest
+- [ ] Crisis and support resources: confirm 911 / 988 / Crisis Text Line / SAMHSA are still current and present on crisis-adjacent pages and the footer
 - [ ] Check for outdated dates or year references
 - [ ] Verify contact information is current
 - [ ] Review blog posts for relevance (if blog enabled)
@@ -213,6 +242,9 @@ For each audit, Chad should generate a report:
 - Design/brand changes
 - Security header modifications
 - Performance regressions requiring architecture changes
+- Anything in The Hard Guardrails above (legal, pricing, claims, HIPAA, modality claims, statistics)
+
+Title, meta, schema, and alt-text edits move fast. Anything touching copy, legal, pricing, or claims waits for the right human. When in doubt, flag rather than edit.
 
 ## Escalation
 
