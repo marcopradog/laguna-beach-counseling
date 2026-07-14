@@ -1,0 +1,41 @@
+{# Site footer: NAP, out-of-network positioning, social profiles, and the
+   shared support-resources block. All values come from src/_data/site.json. #}
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__nap">
+        <p class="site-footer__heading">{{ site.name }}</p>
+        <address>
+          {{ site.nap.streetAddress }}<br />
+          {{ site.nap.addressLocality }}, {{ site.nap.addressRegion }} {{ site.nap.postalCode }}<br />
+          <a href="tel:{{ site.nap.telephoneHref }}">{{ site.nap.telephone }}</a><br />
+          <a href="mailto:{{ site.nap.email }}">{{ site.nap.email }}</a>
+        </address>
+        <p class="site-footer__oon">{{ site.positioning.outOfNetworkLine }}</p>
+      </div>
+
+      <div>
+        <p class="site-footer__heading">Find us</p>
+        <ul class="site-footer__social">
+          {% for profile in site.sameAs %}
+            <li><a href="{{ profile.url }}" rel="me">{{ profile.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div>
+        {% set onFooter = true %}
+        {% include "components/support-resources.njk" %}
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>&copy; {% year %} {{ site.name }}. All rights reserved.</span>
+      <span>
+        {% for link in site.footerLinks %}
+          <a href="{{ link.url }}">{{ link.label }}</a>
+        {% endfor %}
+      </span>
+    </div>
+  </div>
+</footer>

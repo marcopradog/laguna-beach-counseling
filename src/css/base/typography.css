@@ -1,0 +1,85 @@
+/* Base element styling. The type scale is sized up for an older-skewing
+   audience: base is 18px, not 16px (see DESIGN_SYSTEM.md). */
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  font-size: 112.5%; /* 18px base at a 16px root default */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-ink);
+  background-color: var(--color-sand);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--color-navy);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.022em;
+}
+
+h3 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  letter-spacing: -0.018em;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--color-water-deep);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--color-navy);
+}
+
+/* Visible focus for keyboard users (WCAG 2.2 AA). */
+:focus-visible {
+  outline: 3px solid var(--color-water);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Respect a user's motion preference on every animation and transition. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

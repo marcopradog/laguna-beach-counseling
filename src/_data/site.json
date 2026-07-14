@@ -1,0 +1,60 @@
+{
+  "name": "Laguna Beach Counseling",
+  "shortName": "LBC",
+  "legalName": "Kathleen Wenger, LMFT, LPCC, operating as Laguna Beach Counseling",
+  "tagline": "Navigating Life's Waves Together",
+  "foundingYear": 2001,
+  "url": "https://www.lagunabeachcounseling.com",
+  "themeColor": "#003657",
+  "defaultDescription": "A warm, experienced Laguna Beach psychotherapy practice for individuals, couples, and families, with signature Beach Therapy on the coast.",
+  "nap": {
+    "streetAddress": "333 Third Street, Suite 6",
+    "addressLocality": "Laguna Beach",
+    "addressRegion": "CA",
+    "postalCode": "92651",
+    "addressCountry": "United States",
+    "telephone": "(949) 357-3587",
+    "telephoneHref": "+19493573587",
+    "email": "Kay@LagunaBeachCounseling.com",
+    "timezone": "America/Los_Angeles"
+  },
+  "positioning": {
+    "priceRange": "$$$",
+    "outOfNetworkLine": "Laguna Beach Counseling is an out-of-network practice. We do not bill insurance directly, which allows us to deliver full-length sessions, protect client confidentiality, and avoid the diagnostic labeling required by insurance reimbursement. We provide Superbills at every session for clients to submit to their PPO insurance for out-of-network reimbursement."
+  },
+  "booking": {
+    "calendlyUrl": "https://calendly.com/lbc-occc/30min",
+    "callLabel": "Book a free Get to Know Us call",
+    "getStartedPath": "/get-started"
+  },
+  "nav": [
+    { "label": "Therapy", "url": "/therapy" },
+    { "label": "Specialties", "url": "/specialties" },
+    { "label": "Beach Therapy", "url": "/beach-therapy" },
+    { "label": "About", "url": "/about" },
+    { "label": "Fees", "url": "/fees" },
+    { "label": "Contact", "url": "/contact" }
+  ],
+  "footerLinks": [
+    { "label": "Privacy Policy", "url": "/privacy-policy" }
+  ],
+  "sameAs": [
+    { "label": "Google Business Profile", "url": "https://g.page/lagunabeachcounseling" },
+    { "label": "Yelp", "url": "https://www.yelp.com/biz/laguna-beach-counseling-laguna-beach-2" },
+    { "label": "Facebook", "url": "https://www.facebook.com/lagunabeachcounseling/" },
+    { "label": "Instagram", "url": "https://www.instagram.com/lagunabeachcounseling/" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/kathleenwengerlmft/" },
+    { "label": "Psychology Today", "url": "https://www.psychologytoday.com/us/therapists/kathleen-kay-wenger-laguna-beach-ca/38172" }
+  ],
+  "crisisResources": {
+    "intro": "If you are in crisis, you do not have to wait. These lines are here for the moments that cannot wait, any hour of the day.",
+    "notEmergencyNote": "Laguna Beach Counseling is not a crisis or emergency service. If you are in immediate danger or a medical emergency, call 911. When the moment is not an emergency, we would be glad to hear from you for a free call.",
+    "resources": [
+      { "name": "Emergency", "detail": "If you are in immediate danger or a medical emergency, call 911.", "action": "tel:911", "actionLabel": "911" },
+      { "name": "988 Suicide and Crisis Lifeline", "detail": "Call or text 988, or chat at 988lifeline.org. Free, confidential, 24/7.", "action": "tel:988", "actionLabel": "988" },
+      { "name": "Crisis Text Line", "detail": "Text HOME to 741741.", "action": "sms:741741", "actionLabel": "741741" },
+      { "name": "SAMHSA National Helpline", "detail": "Treatment referrals, 1-800-662-4357.", "action": "tel:18006624357", "actionLabel": "1-800-662-4357" }
+    ]
+  },
+  "_omittedPendingConfirmation": "Business hours (site-vs-Yelp conflict), geo coordinates, and aggregateRating are intentionally not published here until confirmed. See CLIENT_FACTS.md open questions and ARCHITECTURE.md."
+}

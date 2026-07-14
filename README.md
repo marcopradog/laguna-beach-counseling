@@ -61,7 +61,7 @@ npm run build
 ## Build Standards
 
 - No em dashes anywhere
-- Accessibility built in from the start (WCAG 2.1 AA)
+- Accessibility built in from the start (WCAG 2.2 AA)
 - Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
 - Agent-readable: semantic HTML, clean structure, proper schema
 - Brand-compliant: follows DESIGN_SYSTEM.md constraints
@@ -70,6 +70,9 @@ npm run build
 
 ```
 laguna-beach-counseling/
+├── eleventy.config.js
+├── package.json
+├── .nvmrc
 ├── ARCHITECTURE.md
 ├── DESIGN_SYSTEM.md
 ├── DEPLOYMENT.md
@@ -81,24 +84,31 @@ laguna-beach-counseling/
 │   ├── AUDIT_AGENT.md
 │   └── README.md
 └── src/
-    ├── _headers
-    ├── _redirects
-    ├── site.webmanifest
+    ├── _data/
+    │   └── site.json
+    ├── _includes/
+    │   ├── layouts/
+    │   └── components/
     ├── css/
+    │   ├── main.css
     │   ├── base/
     │   ├── components/
     │   └── pages/
     ├── js/
-    │   └── pages/
-    └── _includes/
-        └── components/
+    ├── index.njk
+    ├── 404.njk
+    ├── _headers
+    ├── _redirects
+    └── site.webmanifest
 ```
+
+The production build is written to `public/` (gitignored). See ARCHITECTURE.md for the full technical map.
 
 ## Notes
 
-- Favicon files (favicon.ico, favicon.svg, apple-touch-icon.png) will be added in Phase 7
-- Eleventy and Tailwind configuration will be set up in Phase 4
-- All documentation files contain placeholders that will be filled during the appropriate phases
+- Favicon files (favicon.ico, favicon.svg, apple-touch-icon.png) will be added in Phase 7; the base layout already references them
+- Eleventy and Tailwind configuration are set up (Eleventy v3 + Tailwind v4 @theme, Tailwind CLI build)
+- Page content is built in a later phase; index.njk is a foundation placeholder
 
 ## Reference
 

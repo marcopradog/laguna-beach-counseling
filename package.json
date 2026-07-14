@@ -1,0 +1,24 @@
+{
+  "name": "laguna-beach-counseling",
+  "version": "0.1.0",
+  "description": "Laguna Beach Counseling website. Eleventy v3 + Tailwind v4.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i src/css/main.css -o public/css/main.css --minify",
+    "build": "npm run build:css && eleventy",
+    "dev:css": "tailwindcss -i src/css/main.css -o public/css/main.css --watch",
+    "dev:11ty": "eleventy --serve",
+    "start": "concurrently -k -n css,11ty -c cyan,magenta \"npm run dev:css\" \"npm run dev:11ty\"",
+    "clean": "rm -rf public"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "concurrently": "^9.1.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

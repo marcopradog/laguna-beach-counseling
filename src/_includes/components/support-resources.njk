@@ -1,0 +1,19 @@
+{# Reusable support-resources block. Rendered in the footer now, and callable
+   by crisis-adjacent pages (telehealth, depression, anxiety, grief).
+   Pass onFooter=true for the dark footer variant. Facts from site.crisisResources. #}
+<section
+  class="support-resources{% if onFooter %} support-resources--onfooter{% endif %}"
+  aria-labelledby="support-resources-heading"
+>
+  <h2 class="support-resources__heading" id="support-resources-heading">If you need support right now</h2>
+  <p>{{ site.crisisResources.intro }}</p>
+  <ul class="support-resources__list">
+    {% for r in site.crisisResources.resources %}
+      <li>
+        <strong>{{ r.name }}:</strong>
+        {{ r.detail }}
+      </li>
+    {% endfor %}
+  </ul>
+  <p class="support-resources__note">{{ site.crisisResources.notEmergencyNote }}</p>
+</section>

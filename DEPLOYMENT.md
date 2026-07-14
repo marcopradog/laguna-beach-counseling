@@ -9,7 +9,7 @@
 - **Repository:** github.com/marcopradog/laguna-beach-counseling
 - **Production URL:** [To be configured]
 - **Build command:** `npm run build`
-- **Output directory:** `_site`
+- **Output directory:** `public`
 
 ## Cloudflare Pages Settings
 
@@ -17,9 +17,9 @@
 
 ```
 Build command: npm run build
-Build output directory: _site
+Build output directory: public
 Root directory: /
-Node version: 18 or later
+Node version: 20 (repo requires Node >=18; see .nvmrc)
 ```
 
 ### Environment Variables
@@ -86,10 +86,13 @@ These are the official Google thresholds as of July 2026.
 
 ### Asset Budget
 
-- **Hero images:** Target < 300KB each
-- **Below-fold images:** Lazy-loaded, optimized for WebP/AVIF
-- **Total page weight:** Target < 1MB for initial load
-- **JavaScript:** Minimal, defer/async non-critical scripts
+- **CSS:** < 50KB (compiled `public/css/main.css`)
+- **JavaScript:** < 100KB total; minimal, defer/async non-critical scripts
+- **Fonts:** < 30KB total (only the weights in use; self-host subset woff2 if the Google Fonts CDN payload exceeds this)
+- **Images:** < 300KB each; WebP/AVIF with fallback, explicit width/height, lazy-load below the fold
+- **Total page weight:** < 2MB
+
+Hero images get `loading="eager"` + `fetchpriority="high"` + preload; below-fold images get `loading="lazy"`.
 
 ## DNS Configuration
 

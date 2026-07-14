@@ -1,0 +1,16 @@
+---
+layout: layouts/base.njk
+title: Page not found
+description: The page you were looking for could not be found.
+permalink: /404.html
+eleventyExcludeFromCollections: true
+---
+<section class="container page-shell">
+  <p style="font-family: var(--font-sans); letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.8rem; color: var(--color-sun-deep);">Page not found</p>
+  <h1>This page took a walk on the beach.</h1>
+  <p style="max-width: 55ch;">The page you were looking for is not here. It may have moved, or the link may be slightly off. Let us help you find your way back.</p>
+  <p style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+    <a class="btn btn-primary" href="/">Back to home</a>
+    <a class="btn btn-ghost" href="{{ site.booking.getStartedPath }}">{{ site.booking.callLabel }}</a>
+  </p>
+</section>

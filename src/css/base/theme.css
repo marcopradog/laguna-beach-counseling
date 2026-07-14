@@ -1,0 +1,38 @@
+/* Design tokens, locked from DESIGN_SYSTEM.md.
+   Tailwind v4 @theme, no tailwind.config.js. These generate utilities
+   (bg-navy, text-ink, rounded-pill, etc.) and are available as CSS variables. */
+
+@theme {
+  /* Color, the coastal navy palette */
+  --color-navy: #003657;          /* Primary. Headers, nav, depth */
+  --color-navy-deep: #002745;     /* Gradients and footers */
+  --color-navy-darkest: #001a2e;  /* Deepest navy accent */
+  --color-sea-foam: #98c5d8;      /* Soft, calming section backgrounds */
+  --color-sun: #dfa108;           /* Gold. CTAs and tagline lockup only, rationed */
+  --color-sun-deep: #c48d05;      /* Gold hover / pressed */
+  --color-sun-light: #f5c845;     /* Light gold accent */
+  --color-water: #28a0c9;         /* Teal. Links and interactive elements */
+  --color-water-deep: #1a6480;    /* Teal hover / deeper links */
+  --color-sand: #f0f0f0;          /* Neutral page background */
+  --color-sand-warm: #faf6ec;     /* Warmer sand for editorial sections */
+  --color-paper: #ffffff;         /* Cards and content surfaces */
+  --color-ink: #1a2332;           /* Body text (near-black navy) */
+  --color-ink-soft: #485363;      /* Secondary text */
+  --color-ink-faint: #6b7785;     /* Muted labels and captions */
+  --color-green: #2f7d4f;         /* Success states only */
+  --color-border: rgba(0, 54, 87, 0.14);       /* Standard hairline border */
+  --color-border-soft: rgba(0, 54, 87, 0.06);  /* Soft border on cards */
+
+  /* Type. Serif is the voice, sans is the work. */
+  --font-serif: "DM Serif Display", Georgia, serif;
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+
+  /* Radii, exactly three (the life-ring echo, cards, inputs) */
+  --radius-pill: 999px;
+  --radius-card: 20px;
+  --radius-input: 8px;
+
+  /* Shadows. Cards float on the sand; the CTA carries a gold-tinted lift. */
+  --shadow-card: 0 1px 2px rgba(0, 54, 87, 0.02), 0 8px 32px rgba(0, 54, 87, 0.04), 0 24px 48px rgba(0, 54, 87, 0.04);
+  --shadow-cta: 0 2px 8px rgba(0, 26, 46, 0.08), 0 16px 40px rgba(223, 161, 8, 0.18);
+}
