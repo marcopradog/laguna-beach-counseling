@@ -1,8 +1,12 @@
 # Claude Instructions
 
 **Project:** Laguna Beach Counseling
-**Last updated:** 2026-07-13
+**Last updated:** 2026-07-14
 **For:** Claude Code and Chad (autonomous agent)
+
+## North Star
+
+Laguna Beach Counseling is a premium, out-of-network therapy practice in Laguna Beach, built on Kay Wenger's 30-plus years of clinical experience and a category-of-one signature offering, Beach Therapy. We help people who are struggling feel genuinely understood, then take one low-pressure step: a free call. Every page should make the right person think "these are the people who get it," and move them toward booking, never feeling like an appointment processed by a factory. Warm, direct, real. The growth priority is individuals.
 
 ## Purpose
 
@@ -32,6 +36,41 @@ The project in one line: Laguna Beach Counseling (LBC) is a premium, out-of-netw
 - **One thing at a time:** plan it, do it, check it, then move on.
 - **Verify web builds locally** (`npm run build` and `npm start`), spot-check, and use the Cloudflare preview URL every branch gets.
 - **Back-end changes deploy before front-end** on anything touching both.
+
+## Page Build Workflow
+
+Imperative. This runs on every page build.
+
+**BEFORE building any page, READ:**
+
+- `voice-tone.md` (brand voice and the mandatory writing mechanics)
+- this page's brief in `SITE_ARCHITECTURE.md` (its target keyword, section plan, and its specified INTERNAL LINKS)
+- `CONTENT_EVIDENCE.md` (citable verified facts, and the do-not-publish list)
+- `CLIENT_FACTS.md` (business facts, confirmed vs unconfirmed)
+- `DESIGN_SYSTEM.md` Forbidden Patterns
+- `faq.json` (the approved answer engine) for this page's relevant FAQs. NOTE: `faq.json` is pending; until it exists, FAQs must be drawn from an approved source or clearly flagged as draft-pending-Kay-approval, never invented as fact.
+
+**WHILE building:**
+
+- Compose from existing components; never hand-build markup a component covers. New blocks go in the component library, not inline.
+- Add the internal links specified in this page's `SITE_ARCHITECTURE.md` brief.
+- Voice matches `voice-tone.md` and runs its mechanics (a question, a metaphor in abstract paragraphs, lightness, banned-word scan including "simply").
+- Any statistic traces to `CONTENT_EVIDENCE.md`; nothing from the do-not-publish list.
+- Facts from data (`site.json` / `nav.json`), never hardcoded.
+- Schema: page-specific only (Service, BreadcrumbList, FAQPage). Reference the site-wide business entity by `@id`; do not redefine MedicalBusiness per page.
+
+**AFTER building, run this itemized self-check (all must pass before the page is done):**
+
+- Serves the North Star
+- Internal links from the brief are present
+- Correct schema present, generated from the same data as the visible content, and not duplicating the site-wide business entity
+- FAQs come from the approved source (or are flagged draft), not invented
+- Any stats are cited and cleared
+- Exactly one H1, ordered headings
+- Alt text on every meaningful image
+- One gold CTA per viewport
+- No em dashes anywhere
+- WCAG 2.2 AA (visible focus, keyboard operable, reduced-motion respected)
 
 ## Hard Rules (Never Break These)
 
@@ -196,6 +235,8 @@ Crisis-adjacent pages (telehealth, depression, anxiety, grief) and the site foot
 
 ## Build Workflow
 
+For building a content page, follow the Page Build Workflow above; that BEFORE / WHILE / AFTER loop is authoritative for pages. This section is the general build loop for everything else.
+
 1. Read all relevant documentation before making changes:
    - ARCHITECTURE.md for technical structure
    - DESIGN_SYSTEM.md for brand constraints
@@ -232,6 +273,18 @@ Crisis-adjacent pages (telehealth, depression, anxiety, grief) and the site foot
 ## When Unsure
 
 Stop and flag it rather than guessing. A `TO BE CONFIRMED` placeholder with a note is correct; an invented fact is a failure. The open questions that block specific content are listed at the bottom of CLIENT_FACTS.md.
+
+## Documentation References
+
+- `CLIENT_FACTS.md`: business facts, confirmed vs unconfirmed.
+- `CONTENT_EVIDENCE.md`: citable verified stats, and the do-not-publish list.
+- `voice-tone.md`: how it reads (brand voice and writing mechanics).
+- `DESIGN_SYSTEM.md`: how it looks (tokens, components, Forbidden Patterns).
+- `SITE_ARCHITECTURE.md`: the pages, their target keywords, and their internal links.
+- `SCHEMA.md`: structured data per page type.
+- `AEO.md`: the answer-engine build (llms.txt spec and AEO principles).
+- `COMPONENT_COVERAGE.md`: page recipes and the component coverage map.
+- `reference/`: the approved finished design source (brand guidelines, Beach Therapy page).
 
 ## References
 
