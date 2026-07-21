@@ -87,3 +87,15 @@ service:
    prevalence statistic is published: CONTENT_EVIDENCE.md requires a verified
    current CDC/AskCHIS figure pulled at publish time. Anxiety is crisis-adjacent,
    so support: true renders the support-resources block. No em dashes. #}
+{% import "components/sections.njk" as s %}
+{# Evidence moment (CONTENT_EVIDENCE.md): the qualitative modality-evidence
+   claim (line 50, class a; Hofmann et al. 2012, verified via PMC full text) and
+   the 120-minutes-in-nature finding (line 34, class a; White et al. 2019,
+   Scientific Reports, n=19,806, verified at the source URL). Qualitative only,
+   no effect sizes, no prevalence figures, no outcome promises. Confirmed
+   modalities only. Renders in the template's content slot, after the
+   panic/phobias/social section and before the Beach Therapy cross-sell. #}
+{% call s.prose({ width: "narrow" }) %}
+  <p>Does any of this actually work? A fair question to ask anyone you might sit across from. The approaches we lean on for anxiety, solution-focused work, CBT, ACT, and DBT, are among the most studied in the field, and CBT in particular carries decades of meta-analytic support (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3584580/">Hofmann and colleagues' 2012 review</a> is the standard reference). Research averages are not a promise about your particular Tuesday. They just mean the map has been walked before.</p>
+  <p>And the ocean a few blocks away is not just scenery. In <a href="https://www.nature.com/articles/s41598-019-44097-3">a study of nearly 20,000 people</a>, spending at least two hours a week in natural settings was associated with noticeably better health and well-being (White et al., 2019, <em>Scientific Reports</em>).</p>
+{% endcall %}

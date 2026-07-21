@@ -1662,6 +1662,25 @@
   margin-bottom: 0;
 }
 
+/* In-prose links must be visibly distinct beyond color alone (WCAG 1.4.1):
+   Tailwind's preflight strips the browser underline, so restore it here. */
+.prose a {
+  color: var(--color-water-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.prose a:hover {
+  color: var(--color-navy);
+}
+
+.prose a:focus-visible {
+  outline: 3px solid var(--color-water);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Navy serif drop-cap on the opening paragraph. Navy, not gold. */
 .prose--dropcap > p:first-of-type::first-letter {
   float: left;
