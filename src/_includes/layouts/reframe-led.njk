@@ -1,0 +1,128 @@
+---
+layout: layouts/base.njk
+---
+{#
+  reframe-led: page template for topics with a strong cognitive reframe
+  (anxiety, depression, life-transitions, individuals, our-approach,
+  discernment-counseling). See COMPONENT_COVERAGE.md for the full mapping.
+
+  A page using this layout is front matter data plus an optional body. Keys
+  (all optional unless marked required; absent keys render nothing):
+
+    crumbs      [{label, url?}]                 breadcrumbs; last item = current page
+    hero        { eyebrow, title (required), titleEmphasis?, lead?, variant?
+                  (split | center), image?{src,alt,sourceTag?}, trust?[{label}],
+                  gold?, ctaLabel?, ctaHref?, secondaryCta?{href,label} }
+    lead        string | string[]               the reframe prose
+    happening   { eyebrow, title, columns?, cards[] }      "what's really happening"
+    work        { eyebrow, title, columns?, cards[], tone? }  "what the work looks like"
+    subForms    { eyebrow, title, titleEmphasis?, lead?, items[{icon?,title,body}] }
+                numbered gold-digit list of the topic's sub-forms
+    crossSell   { eyebrow, title, titleEmphasis?, body, href, label,
+                  image?, reverse?, imageWeight?, anchorLine?, pullQuote?, tone? }
+    quote       { text, attribution?, foam? }
+    next        { eyebrow, title, titleEmphasis?, columns?, cards[], tone? }
+    faq         { eyebrow, title, items[{q,a}], variant? }  also emits faqSchema
+    support     true renders the crisis support-resources block
+    cta         { title, titleEmphasis?, text?, note?, watermark?, tagline?,
+                  href?, label?, variant? }
+    service     { name, serviceType, description, areaServed? }  emits serviceSchema
+
+  The page BODY renders at the content slot after subForms and before the
+  cross-sell, for page-specific extra sections composed from the library.
+
+  Enforced here, not by convention: the CTA band is always tone sand (the navy
+  band must never sit directly above the navy footer), the hero renders the
+  page's only h1, the hero CTA is navy unless the page opts into hero.gold as
+  the viewport's single gold action. Facts come from front matter and site data,
+  never hardcoded. No em dashes.
+#}
+{% import "components/ui.njk" as ui %}
+{% import "components/sections.njk" as s %}
+
+{% if crumbs %}{{ s.breadcrumbs(crumbs) }}{% endif %}
+
+{{ s.hero({
+  eyebrow: hero.eyebrow,
+  title: hero.title,
+  titleEmphasis: hero.titleEmphasis,
+  lead: hero.lead,
+  variant: hero.variant,
+  image: hero.image,
+  trust: hero.trust,
+  cta: { href: hero.ctaHref or site.booking.getStartedPath, label: hero.ctaLabel or site.booking.navLabel, gold: hero.gold },
+  secondaryCta: hero.secondaryCta
+}) }}
+
+{% if lead %}{{ s.lead({ text: lead }) }}{% endif %}
+
+{% if happening %}
+  {{ s.pointCards({ eyebrow: happening.eyebrow, title: happening.title, columns: happening.columns, cards: happening.cards }) }}
+{% endif %}
+
+{% if work %}
+  {{ s.pointCards({ eyebrow: work.eyebrow, title: work.title, columns: work.columns, cards: work.cards, tone: work.tone or "sand" }) }}
+{% endif %}
+
+{% if subForms %}
+  {{ s.numberedList({ eyebrow: subForms.eyebrow, title: subForms.title, titleEmphasis: subForms.titleEmphasis, lead: subForms.lead, items: subForms.items }) }}
+{% endif %}
+
+{# Content slot: page-specific sections composed from the library land here. #}
+{{ content | safe }}
+
+{% if crossSell %}
+  {{ s.promoCallout({
+    eyebrow: crossSell.eyebrow,
+    title: crossSell.title,
+    titleEmphasis: crossSell.titleEmphasis,
+    body: crossSell.body,
+    cta: { href: crossSell.href, label: crossSell.label },
+    image: crossSell.image,
+    reverse: crossSell.reverse,
+    imageWeight: crossSell.imageWeight,
+    anchorLine: crossSell.anchorLine,
+    pullQuote: crossSell.pullQuote,
+    tone: crossSell.tone
+  }) }}
+{% endif %}
+
+{% if quote %}{{ s.pullQuote({ quote: quote.text, attribution: quote.attribution, foam: quote.foam }) }}{% endif %}
+
+{% if next %}
+  {{ s.pointCards({ eyebrow: next.eyebrow, title: next.title, columns: next.columns or 2, cards: next.cards, tone: next.tone or "sand" }) }}
+{% endif %}
+
+{% if faq %}{{ s.faq({ eyebrow: faq.eyebrow, title: faq.title, items: faq.items, variant: faq.variant }) }}{% endif %}
+
+{% if support %}
+  {% call ui.section({ tone: "paper", width: "narrow" }) %}
+    {% set onFooter = false %}
+    {% include "components/support-resources.njk" %}
+  {% endcall %}
+{% endif %}
+
+{{ s.ctaBand({
+  variant: cta.variant or "center",
+  tone: "sand",
+  watermark: cta.watermark,
+  title: cta.title,
+  titleEmphasis: cta.titleEmphasis,
+  text: cta.text,
+  note: cta.note,
+  tagline: cta.tagline,
+  cta: { href: cta.href or site.booking.getStartedPath, label: cta.label or site.booking.navLabel }
+}) }}
+
+{% if service %}
+  {{ s.serviceSchema({
+    name: service.name,
+    serviceType: service.serviceType,
+    description: service.description,
+    url: page.url,
+    business: { url: site.url, name: site.name, telephone: site.nap.telephone },
+    areaServed: service.areaServed
+  }) }}
+{% endif %}
+{% if crumbs %}{{ s.breadcrumbSchema(crumbs, site.url) }}{% endif %}
+{% if faq %}{{ s.faqSchema(faq.items) }}{% endif %}

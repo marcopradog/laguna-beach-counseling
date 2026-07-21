@@ -62,6 +62,67 @@ already built) and the shared `header` / `footer` / mega menu.
 
 ---
 
+## Page templates (src/_includes/layouts/)
+
+Three reusable page-template layouts compose the library into full pages. A page using one is
+front matter data (structured keys per section) plus an optional body that renders at a
+documented mid-page content slot for page-specific extras. All three chain to base.njk, keep
+the header / footer / mega menu unchanged, enforce the sand CTA band above the footer, render
+exactly one h1 (the hero), and keep the gold discipline. Key reference lives in each layout's
+doc comment.
+
+- `layouts/reframe-led.njk`: breadcrumbs, hero, lead (the reframe), pointCards x2, numberedList
+  (sub-forms), SLOT, promoCallout, pullQuote, pointCards linkable, faq + faqSchema, support,
+  ctaBand sand, serviceSchema + breadcrumbSchema.
+- `layouts/story-led.njk`: breadcrumbs, hero, lead, founderNote (early; leans on Kay's voice),
+  promoCallout (image-dominant), pullQuote (foam default), definitionList OR steps (by key),
+  SLOT, pointCards linkable, faq, support, ctaBand sand, schema.
+- `layouts/practical-led.njk`: breadcrumbs, hero, lead, steps, featureRow trust band,
+  pointCards, rateTable (optional), SLOT, promoCallout, pointCards linkable, faq, support,
+  ctaBand sand, schema.
+
+### Page-to-template mapping
+
+| Page | Template | Notes |
+|---|---|---|
+| `/specialties/anxiety` | reframe-led | The archetype; sub-forms = numberedList |
+| `/specialties/depression` | reframe-led | `support: true` |
+| `/specialties/life-transitions` | reframe-led | |
+| `/therapy/individuals` | reframe-led | Brief is the "knowing better but stuck" reframe; growth priority |
+| `/about/our-approach` | reframe-led | Model explainer ("insight and movement") |
+| `/discernment-counseling` | reframe-led | The three paths = numberedList |
+| `/specialties/grief` | story-led | `support: true`; Susi Q grief-group credibility |
+| `/specialties/infidelity` | story-led | Recovery path fits the `journey` steps block |
+| `/specialties/conflict-resolution` | story-led | TODO: confirm against brief. The SITE_ARCHITECTURE brief leans cognitive-reframe (the repeated-argument pattern); re-decide before drafting |
+| `/specialties/faith-based` | story-led | Welcoming stance narrative |
+| `/about` | story-led | Founding narrative |
+| `/about/kay-wenger` | story-led | founderNote founder variant carries the page |
+| `/beach-therapy` | story-led | Origin story; what-to-expect = `journey` steps |
+| `/specialties/neurodiversity` | practical-led | |
+| `/specialties/addiction-recovery` | practical-led | Scope-bounding copy in lead / content slot |
+| `/therapy/couples` | practical-led | TODO: confirm against brief. Brief leans stance-narrative (pro-commitment voice); premarital keyword section (~3,880 impressions) goes in the content slot either way; re-decide before drafting |
+| `/therapy/teens` | practical-led | Mother-daughter and Men's Group sections via content slot |
+| `/therapy/seniors` | practical-led | TODO: confirm against brief. Brief leans Susi-Q story; re-decide before drafting |
+| `/therapy/families` | practical-led | |
+| `/therapy/children` | practical-led | Growth priority |
+| `/therapy` (landing) | practical-led | Only hero + lead + `next` grid + cta keys |
+| `/specialties` (landing) | practical-led | Same lean usage |
+| `/couples-intensive` | practical-led | The day = steps; cta keys point at Contact, not the fit call |
+| `/telehealth` | practical-led | `support: true`; CA-only note in lead |
+| `/fees` | practical-led | Uses the optional `rates` rateTable block |
+| `/faq` | practical-led | Only hero + faq + cta keys populated |
+| `/` (homepage) | custom, no template | Routing front door, grid-driven, needs teamGrid; factory-guardrail sensitive |
+| `/about/our-team` | custom | Needs teamGrid (still a GAP) |
+| `/get-started` | custom | bookingEmbed one-off |
+| `/contact` | custom | napBlock, map, form one-offs; full MedicalBusiness schema |
+| `/blog` + post template | custom | postList deferred; post layout is future work |
+| `/privacy-policy`, `/thank-you` | custom minimal | Client-supplied legal text / confirmation state |
+| `/testimonials` | ON HOLD | Not built (HIPAA authorization workflow pending) |
+
+Tally: reframe-led 6, story-led 7, practical-led 13, custom 8, on hold 1.
+
+---
+
 ## 1. Page-type inventory
 
 | Type | Pages | Count |

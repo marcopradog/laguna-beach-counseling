@@ -52,6 +52,8 @@ Imperative. This runs on every page build.
 
 **WHILE building:**
 
+- Before composing a page from raw components, check whether a matching page template exists in `src/_includes/layouts/` (reframe-led, story-led, practical-led; mapping table in COMPONENT_COVERAGE.md) and use it; compose directly from the library only if no template fits.
+- Look up the page's assigned template in COMPONENT_COVERAGE.md's mapping table. If that row is flagged "TODO: confirm against brief," read the page's SITE_ARCHITECTURE.md brief and confirm the best-fit template before drafting, rather than defaulting to the table's guess.
 - Compose from existing components; never hand-build markup a component covers. New blocks go in the component library, not inline.
 - Add the internal links specified in this page's `SITE_ARCHITECTURE.md` brief.
 - Voice matches `voice-tone.md` and runs its mechanics (a question, a metaphor in abstract paragraphs, lightness, banned-word scan including "simply").
